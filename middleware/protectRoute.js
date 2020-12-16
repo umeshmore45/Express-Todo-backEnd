@@ -3,7 +3,11 @@ const { User } = require("../modules/userSchema");
 
 const protectRoute = async (req, res, next) => {
   if (!req.headers.authorization) {
-    return res.send("Not Valid User");
+    return sendErrorMessage(
+      new AppError(401, "UnSuccessful", "Please login or signup"),
+      req,
+      res
+    );
   }
   // if headers are there
 
@@ -13,7 +17,11 @@ const protectRoute = async (req, res, next) => {
   try {
     decoded = await verfiyToken(jwtToken, process.env.JWT_SECRET);
   } catch (err) {
-    return res.send("Not Valid User");
+    return sendErrorMessage(
+      new AppError(401, "UnSuccessful", "Invalid Token"),
+      req,
+      res
+    );
   }
   // email
   let mail = decoded.email;
@@ -21,7 +29,11 @@ const protectRoute = async (req, res, next) => {
   let currentUser = await User.findOne({ email: mail });
 
   if (!currentUser) {
-    return res.send("Not Valid User");
+    return sendErrorMessage(
+      new AppError(401, "UnSuccessful", "User not registered"),
+      req,
+      res
+    );
   }
   // check verification
   req.currentUser = currentUser;

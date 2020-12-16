@@ -17,6 +17,7 @@ mongoose
     app.use(express.json());
     app.use("/users", router);
     app.use("/task", protectRoute, taskRouter);
+    app.use(express.urlencoded({ extended: true }));
 
     app.listen(process.env.PORT, () => {
       console.log(`On Port ${process.env.PORT}`);

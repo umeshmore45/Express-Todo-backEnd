@@ -5,21 +5,36 @@ const createTask = (req, res, next) => {
     let newTask = new Task({
       taskName: req.body.taskName,
     });
-    newTask.save().then((data) => {
-      console.log(data);
-    });
+    newTask
+      .save()
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        return err;
+      });
+    res.send("created Successfully");
   } catch (err) {
-    return console.log(err);
+    console.log(err);
+    return err;
   }
 };
 
 const readTask = async (req, res, next) => {
   try {
-    const task = await Task.find().select(
-      "taskName  taskStatus createdAt -_id"
-    );
-    console.log(task);
-    res.send(task);
+    const tasknw = req.query.select;
+
+    if (tasknw) {
+      const task = await Task.find().select(`${tasknw} taskID createdAt -_id`);
+      console.log(task);
+      return res.send(task);
+    } else {
+      const task = await Task.find().select(
+        `taskName taskStatus taskID createdAt -_id`
+      );
+      res.send(task);
+    }
   } catch (err) {
     console.log(err);
     return err;
@@ -32,6 +47,13 @@ const findById = async (req, res, next) => {
       "taskName  taskStatus createdAt -_id"
     );
 
+    if (!task) {
+      return sendErrorMessage(
+        new AppError(404, "UnSuccessful", "Entre Valid Id"),
+        req,
+        res
+      );
+    }
     console.log(task);
     res.send(task);
   } catch (err) {
@@ -42,12 +64,14 @@ const findById = async (req, res, next) => {
 
 const updateById = async (req, res, next) => {
   try {
+    console.log(req.body.taskSatuts);
     const task = await Task.findByIdAndUpdate(
       { _id: req.params.id },
-      { taskStatus: "In progress" }
+      { taskStatus: req.body.taskSatuts },
+      { new: true }
     );
-    console.log(task);
-    res.send(task);
+    console.log(await task);
+    res.send(await task);
   } catch (err) {
     console.log(err);
     return err;

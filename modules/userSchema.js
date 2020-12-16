@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema(
 
     email: {
       type: String,
-      required: [true, "Required"],
+      required: [true, "Email is Required"],
       validate: {
         validator: function () {
           const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -37,13 +37,6 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-
-// userSchema.method.generateHash = async function () {
-//   let salt = await bcrypt.genSalt(10);
-//   let hash = await bcrypt.hash(this.password, salt);
-//   console.log("hash", hash);
-//   return hash;
-// };
 
 userSchema.pre("save", async function (next) {
   let salt = await bcrypt.genSalt(10);
