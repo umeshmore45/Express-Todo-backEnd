@@ -32,7 +32,7 @@ const readTask = async (req, res, next) => {
       console.log(task);
       return res.send(task);
     } else {
-      const task = await Task.find().select(
+      const task = await Task.find(req.query).select(
         `taskName taskStatus taskID createdAt -_id`
       );
       res.send(task);
@@ -78,7 +78,7 @@ const updateById = async (req, res, next) => {
       const task = await Task.findByIdAndUpdate(
         { _id: req.params.id },
         { taskStatus: req.body.taskStatus },
-        { new: true }
+        { runValidators: true, new: true }
       );
       console.log(await task);
       res.send(await task);
