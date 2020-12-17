@@ -1,3 +1,5 @@
+const { AppError } = require("../helper/Errorclass");
+const { sendErrorMessage } = require("../helper/sendError");
 const { Task } = require("../modules/taskSchema");
 
 const createTask = (req, res, next) => {
@@ -47,15 +49,16 @@ const findById = async (req, res, next) => {
       "taskName  taskStatus createdAt -_id"
     );
 
-    if (!task) {
+    if (task) {
+      console.log(task);
+      return res.send(task);
+    } else {
       return sendErrorMessage(
         new AppError(404, "UnSuccessful", "Entre Valid Id"),
         req,
         res
       );
     }
-    console.log(task);
-    res.send(task);
   } catch (err) {
     console.log(err);
     return err;
@@ -64,14 +67,22 @@ const findById = async (req, res, next) => {
 
 const updateById = async (req, res, next) => {
   try {
-    console.log(req.body.taskSatuts);
-    const task = await Task.findByIdAndUpdate(
-      { _id: req.params.id },
-      { taskStatus: req.body.taskSatuts },
-      { new: true }
-    );
-    console.log(await task);
-    res.send(await task);
+    console.log(req.body.taskStatus);
+    if (req.body.taskStatus.trim() === "") {
+      return sendErrorMessage(
+        new AppError(406, "unSuccessful", "Enter Valid Input"),
+        req,
+        res
+      );
+    } else {
+      const task = await Task.findByIdAndUpdate(
+        { _id: req.params.id },
+        { taskStatus: req.body.taskStatus },
+        { new: true }
+      );
+      console.log(await task);
+      res.send(await task);
+    }
   } catch (err) {
     console.log(err);
     return err;

@@ -3,6 +3,8 @@ const bcrypt = require("bcrypt");
 const { User } = require("../modules/userSchema");
 const { genrateToken } = require("../helper/jwtAythentication");
 const { json } = require("express");
+const { sendErrorMessage } = require("../helper/sendError");
+const { AppError } = require("../helper/Errorclass");
 
 const userSignUp = (req, res, next) => {
   let newTask = new User({
@@ -27,6 +29,14 @@ const userLogIn = async (req, res, next) => {
       req.currentUser._doc.password
     );
 
+    if (!result) {
+      return sendErrorMessage(
+        new AppError(401, "Unsuccessful", "Incorrect Password"),
+        req,
+        res
+      );
+    }
+
     let jwttoken = await genrateToken(
       { email: req.currentUser._doc.email },
       process.env.JWT_SECRET,
@@ -34,7 +44,7 @@ const userLogIn = async (req, res, next) => {
     );
     console.log(jwttoken);
     res.cookie("jwt", jwttoken);
-    res.status(200).json({
+    return res.status(200).json({
       status: "Successful",
       data: [
         {
@@ -42,10 +52,6 @@ const userLogIn = async (req, res, next) => {
         },
       ],
     });
-
-    if (!result) {
-      return res.send("incorect password");
-    }
   } catch (err) {
     console.log(err);
     return err;
