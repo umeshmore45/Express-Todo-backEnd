@@ -48,9 +48,25 @@ Minimum eight in length
 
 ![alt text](https://raw.githubusercontent.com/umeshmore45/files/master/Screenshot%20from%202020-12-16%2018-10-52.png)
 
--Get All TAsk
+- Get All TAsk
 
 ![alt text](https://raw.githubusercontent.com/umeshmore45/files/master/Screenshot%20from%202020-12-16%2018-11-07.png)
+
+- Get By Select
+![alt text](https://raw.githubusercontent.com/umeshmore45/files/master/Screenshot%20from%202020-12-17%2014-00-38.png)
+
+- Get By Query 
+![alt text](https://raw.githubusercontent.com/umeshmore45/files/master/Screenshot%20from%202020-12-17%2014-00-45.png)
+
+- Get By ID 
+
+![alt text](https://raw.githubusercontent.com/umeshmore45/files/master/Screenshot%20from%202020-12-17%2014-01-25.png)
+
+- Update By ID
+![alt text](https://raw.githubusercontent.com/umeshmore45/files/master/Screenshot%20from%202020-12-17%2014-01-50.png)
+
+- Delete By ID
+![alt text](https://raw.githubusercontent.com/umeshmore45/files/master/Screenshot%20from%202020-12-17%2014-02-00.png)
 
 
 
