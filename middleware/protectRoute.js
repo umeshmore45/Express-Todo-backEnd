@@ -1,6 +1,7 @@
 const { verfiyToken } = require("../helper/jwtAythentication");
 const { User } = require("../modules/userSchema");
-
+const { sendErrorMessage } = require("../helper/sendError");
+const { AppError } = require("../helper/Errorclass");
 const protectRoute = async (req, res, next) => {
   if (!req.headers.authorization) {
     return sendErrorMessage(
@@ -9,7 +10,6 @@ const protectRoute = async (req, res, next) => {
       res
     );
   }
-  // if headers are there
 
   let jwtToken = req.headers.authorization.split(" ")[1];
 

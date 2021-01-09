@@ -15,7 +15,10 @@ const userSignUp = (req, res, next) => {
   newTask
     .save()
     .then((users) => {
-      res.send("Successfully SignUp");
+      res.status(200).json({
+        status: "Successfully",
+        data: users,
+      });
     })
     .catch((err) => {
       console.log(err);
