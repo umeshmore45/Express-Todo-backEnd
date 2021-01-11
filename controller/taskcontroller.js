@@ -1,22 +1,27 @@
 const { AppError } = require("../helper/Errorclass");
 const { sendErrorMessage } = require("../helper/sendError");
 const { Task } = require("../modules/taskSchema");
+const uniqid = require("uniqid");
 
 const createTask = (req, res, next) => {
   try {
     let newTask = new Task({
       taskName: req.body.taskName,
+      taskID: uniqid(),
     });
     newTask
       .save()
       .then((data) => {
         console.log(data);
+        res.json({
+          id: data._id,
+          taskName: data.taskName,
+        });
       })
       .catch((err) => {
         console.log(err);
         return err;
       });
-    res.send("created Successfully");
   } catch (err) {
     console.log(err);
     return err;
@@ -91,9 +96,9 @@ const updateById = async (req, res, next) => {
 
 const deleteById = async (req, res, next) => {
   try {
-    const task = await Task.findOneAndRemove({ _id: req.params.id });
+    const task = await Task.findOneAndRemove({ taskID: req.params.id });
     console.log("Successfully Deleted");
-    res.send("Successfully Deleted");
+    res.send(task);
   } catch (err) {
     console.log(err);
     return err;
